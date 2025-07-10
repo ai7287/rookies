@@ -1,3 +1,5 @@
+#quiz 2 정답예시
+
 import feedparser
 from openpyxl import Workbook
 import os
