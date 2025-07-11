@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS 서비스</title>
+</head>
+<body>
+    <h1>RSS 서비스</h1>
+    <form method="post" action="{{url_for('rss')}}">
+        <b>RSS 주소를 입력하세요.</b></br>
+        <input type="text" name="rss_url" size="50"></br>
+        <button type="submit">확인</button>
+    </form>
+</body>
+</html>

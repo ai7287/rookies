@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Shodan Search</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 8px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Shodan Search</h1>
+    <form method="post">
+      <label for="product">Product:</label>
+      <input type="text" id="product" name="product" />
+      <input type="submit" value="Search" />
+    </form>
+    {% if results %}
+    <h2>'{{ product }}' 쇼단 검색 결과</h2>
+    <table>
+      <tr>
+        <th>IP</th>
+        <th>Port</th>
+        <th>Organization</th>
+        <th>Location</th>
+        <th>Hostnames</th>
+        <th>Domains</th>
+        <th>Timestamp</th>
+      </tr>
+      {% for match in results %}
+      <tr>
+        <td>{{ match['ip_str'] }}</td>
+        <td>{{ match['port'] }}</td>
+        <td>{{ match.get('org', 'N/A') }}</td>
+        <td>{{ match['location']['country_name'] }}</td>
+        <td>
+          {{ ', '.join(match['hostnames']) if match['hostnames'] else 'N/A' }}
+        </td>
+        <td>
+          {{ ', '.join(match['domains']) if match['domains'] else 'N/A' }}
+        </td>
+        <td>{{ match['timestamp'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </body>
+</html>

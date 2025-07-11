@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css')}}"
+    />
+  </head>
+  <body>
+    <h1>rss 결과 페이지</h1>
+    <table border="1">
+      <tr>
+        <td>제목</td>
+        <td>링크</td>
+        <td>요약</td>
+      </tr>
+      {% for entry in feed.entries %}
+      <tr>
+        <td>{{ entry.title }}</td>
+        <td><a href="{{ entry.link }}">{{ entry.link }}</a></td>
+        <td>{{ entry.description }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
