@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FTP 파일 목록</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h2>FTP 파일 목록</h2>
+    <ul>
+      {% for file in files %}
+      <li>{{ file }}</li>
+      {% endfor %}
+    </ul>
+    <div style="text-align: center; margin-top: 20px">
+      <a href="/">다시 로그인</a>
+    </div>
+  </body>
+</html>
