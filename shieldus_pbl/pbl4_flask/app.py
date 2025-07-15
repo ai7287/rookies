@@ -15,7 +15,7 @@ def login():
     pw = request.form.get('password', '').strip()
 
     if not host or not user or not pw:
-        return "❗ 모든 입력값을 입력해주세요."
+        return "모든 입력값을 입력해주세요."
 
     try:
         # FTP 접속 시도
@@ -23,8 +23,8 @@ def login():
         ftp.login(user=user, passwd=pw)
 
         # 현재 경로 및 파일 목록 출력
-        print("📁 현재 경로:", ftp.pwd())
-        print("📄 파일 목록:")
+        print("현재 경로:", ftp.pwd())
+        print("파일 목록:")
         files = []
         ftp.retrlines('LIST', lambda line: files.append(line))
         for f in files:
@@ -34,7 +34,7 @@ def login():
 
         return render_template('index.html', files=files, host=host)
     except Exception as e:
-        print("🚨 에러 발생:", e)
+        print("에러 발생:", e)
         return f"로그인 실패: {str(e)}"
 
 if __name__ == '__main__':

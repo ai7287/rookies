@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>보안 정보 통합 검색</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1><a href="/">🔐 보안 정보 통합 검색 서비스</a></h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="search-form-container">
+            <form action="/search" method="POST">
+                <div class="search-input-group">
+                    <input type="text" name="keyword" placeholder="키워드를 입력하세요 (쉼표로 구분 가능)" required>
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
+                <div class="toggle-options">
+                    <label>
+                        <input type="checkbox" name="source" value="nvd" checked> NVD
+                    </label>
+                    <label>
+                        <input type="checkbox" name="source" value="hackernews" checked> The Hacker News
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

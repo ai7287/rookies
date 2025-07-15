@@ -1,0 +1,13 @@
+# requirements.txt
+
+flask
+requests
+pandas
+openpyxl
+slack_sdk
+python-dotenv
+deep-translator
+beautifulsoup4
+feedparser
+summa
+Flask-Session

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>🔥 인기 검색 키워드 순위</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table {
+            width: 400px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        h2 {
+            color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <h2>📊 실시간 인기 키워드 TOP 20</h2>
+    <table>
+        <tr>
+            <th>순위</th>
+            <th>키워드</th>
+            <th>검색 횟수</th>
+        </tr>
+        {% for i, item in enumerate(ranking) %}
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ item._id }}</td>
+            <td>{{ item.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">🔙 메인으로 돌아가기</a>
+</body>
+</html>

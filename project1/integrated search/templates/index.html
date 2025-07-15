@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>보안 정보 통합 검색</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1><a href="/">🔐 보안 정보 통합 검색 서비스</a></h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="search-form-container">
+            <form action="/search" method="POST">
+                <div class="search-input-group">
+                    <input type="text" name="keyword" placeholder="키워드를 입력하세요 (쉼표로 구분 가능)" required>
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
+                <div class="toggle-options">
+                    <label>
+                        <input type="checkbox" name="source" value="nvd" checked> NVD
+                    </label>
+                    <label>
+                        <input type="checkbox" name="source" value="hackernews" checked> The Hacker News
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="keyword-stats">
+            <h2>📈 인기 검색 키워드</h2>
+            <ol>
+                {% for item in keyword_ranking %}
+                <li>{{ item._id }} ({{ item.count }}회)</li>
+                {% endfor %}
+            </ol>
+
+            <h2>⏱ 최근 검색 키워드</h2>
+            <ul>
+                {% for item in recent_keywords %}
+                <li>
+                    {{ item.keyword }} - {{ item.searched_at.strftime("%Y-%m-%d %H:%M") }}
+                    <form action="{{ url_for('delete_keyword') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="keyword_id" value="{{ item._id }}">
+                        <button type="submit" style="border:none; background:none; cursor:pointer;">❌</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>index.html
+        </div>
+    </div>
+</body>
+</html>

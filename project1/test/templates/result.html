@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>검색 결과</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="buttons">
+      <a href="/download"><button class="action-btn">엑셀 다운로드</button></a>
+      <a href="/send_slack"
+        ><button class="action-btn">슬랙으로 전송</button></a
+      >
+      <form action="/send_email" method="POST" class="email-form">
+        <input
+          type="email"
+          name="email_address"
+          placeholder="이메일 주소 입력"
+          required
+        />
+        <button type="submit" class="action-btn">이메일 전송</button>
+      </form>
+    </div>
+
+    <div class="container">
+      <h1><a href="/">🔎 검색 결과</a></h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+
+      <h2>전체 항목 (총 {{ data_all|length }}건)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 10%">출처</th>
+              <th>ID / 제목</th>
+              <th>요약 (KO)</th>
+              <th style="width: 15%">OWASP</th>
+              <th style="width: 8%">점수</th>
+              <th style="width: 8%">링크</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data_all %}
+            <tr>
+              <td>{{ row.source }}</td>
+              <td>{{ row.id }}</td>
+              <td class="description">{{ row.description_ko }}</td>
+              <td>{{ row.owasp_category | default('N/A', true) }}</td>
+              <td>{{ row.score if row.score is not none else 'N/A' }}</td>
+              <td><a href="{{ row.link }}" target="_blank">보기</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>고위험 항목 (CVSS 9.0 이상, 총 {{ data_high|length }}건)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 10%">출처</th>
+              <th>ID / 제목</th>
+              <th>요약 (KO)</th>
+              <th style="width: 8%">점수</th>
+              <th style="width: 8%">링크</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if data_high %} {% for row in data_high %}
+            <tr>
+              <td>{{ row.source }}</td>
+              <td>{{ row.id }}</td>
+              <td class="description">{{ row.description_ko }}</td>
+              <td><strong>{{ row.score }}</strong></td>
+              <td><a href="{{ row.link }}" target="_blank">보기</a></td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+              <td colspan="5" style="text-align: center; color: #888">
+                고위험 항목이 없습니다.
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
