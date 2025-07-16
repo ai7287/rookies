@@ -1,7 +1,8 @@
 import os
+import re
 import time
 from datetime import datetime
-import re
+
 
 dir_path = "01/uploads"
 pre_file = set(os.listdir(dir_path))
