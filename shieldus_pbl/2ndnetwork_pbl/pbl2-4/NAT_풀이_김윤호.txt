@@ -1,0 +1,50 @@
+
+NAT 문제 풀이
+
+- PC → Switch → Router2 (NAT) → Router3 → Server
+
+[PC]
+- IP: 192.168.10.10
+- Subnet Mask: 255.255.255.0
+- Gateway: 192.168.10.1
+
+[Router2 - NAT]
+- Fa0/0: 192.168.10.1 (ip nat inside)
+- Serial0/0: 10.0.0.1/30 (ip nat outside)
+
+[Router3]
+- Serial0/0: 10.0.0.2/30
+- Fa0/0: 203.0.113.254
+
+[Server]
+- IP: 203.0.113.3
+- Subnet Mask: 255.255.255.0
+- Gateway: 203.0.113.254
+
+NAT 설정 명령어 (Router2):
+----------------------------------------
+access-list 1 permit 192.168.10.0 0.0.0.255
+
+interface fa0/0
+ ip address 192.168.10.1 255.255.255.0
+ ip nat inside
+ no shutdown
+
+interface serial0/0
+ ip address 10.0.0.1 255.255.255.252
+ ip nat outside
+ clock rate 64000
+ no shutdown
+
+ip nat inside source list 1 interface serial0/0 overload
+라우팅 설정:
+
+[Router2]
+ip route 203.0.113.0 255.255.255.0 10.0.0.2
+
+[Router3]
+ip route 192.168.10.0 255.255.255.0 10.0.0.1
+
+- PC → ping 203.0.113.3 성공
+- show ip nat translations 명령어로 NAT 변환 테이블 확인 완료
+
