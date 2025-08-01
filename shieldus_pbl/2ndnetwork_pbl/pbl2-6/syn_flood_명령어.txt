@@ -1,0 +1,23 @@
+# mesploitable 
+ifconfig
+ip : 192.168.217.130
+
+# Kali Linux - SYN Flood 공격
+sudo hping3 -S --flood -V -p 80 192.168.217.130
+
+# Metasploitable2 - SYN_RECV 상태 확인
+watch -n 1 "netstat -ant | grep SYN_RECV"
+
+# Metasploitable2 - SYN Cookies 방어 설정
+sudo sysctl -w net.ipv4.tcp_syncookies=1
+
+# Metasploitable2 - iptables을 이용한 SYN 속도 제한 방어 (실습과 똑같음)
+sudo iptables -A INPUT -p tcp --dport 80 --syn -m limit --limit 5/second --limit-burst 20 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 --syn -j DROP
+
+방어 적용 후 효과 설명
+192.168.217.130 서버로 초당 수천 개의 SYN 패킷 전송, CPU 사용률 증가, SYN_RECV 쌓임
+커널에서 가짜 연결 없이 ACK 응답 유도 → 자원 점유 감소
+초당 5개 이상의 SYN 패킷을 자동 차단 → SYN_RECV 급감
+결과 비교
+SYN_RECV 수는 공격전에 0 공격중일때 수백~수천으로 급증하고 방어 후에는 매우 급감함.
