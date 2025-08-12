@@ -1,0 +1,7 @@
+#!/bin/sh
+
+dnf upgrade –y
+dnf install -y httpd wget php-mysqli php
+echo "My home page yunho" >> /var/www/html/index.html
+systemctl start httpd
+systemctl enable httpd
