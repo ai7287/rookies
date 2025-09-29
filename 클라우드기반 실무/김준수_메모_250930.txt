@@ -1,0 +1,221 @@
+도구를 활용한 소스코드 진단
+-> Appscan, Fortify 등...
+
+사람 수동으로 식별 분석하는 수동 소스코드 진단
+-> 방법론을 가지고 데이터 트레이싱을 통한 소스코드 분석 진단
+
+** 소스코드 진단 방식 비교 **
+			자동 소스 진단 vs 수동 소스 진단
+시간			빠르다		상대적으로 시간이 많이 소요됨
+과/오탐비율	많다.			적다
+단점			과오탐 비율이 多	진단자 역량에 따라 결과 산출물 품질이 결정됨
+
+
+
+			웹 동적진단		웹 정적진단
+기간			상대적 (적음)		상대적 (기간 많이 소요됨)
+장점			시간 대비 많은량의	조금더 명확하고 분명한 진단 결과가 도출됨
+			진단수행이 가능함	다양한 취약점 식별이 가능함
+단점			놓치는 취약점이 많이	진단자 역량에 따라 결과 산출물 품질이 결정됨
+			생길 가능성이 多
+
+공지사항 조회	-> FAQ
+A
+public String GetNoticeList(String idx, String p){		GetFAQList
+	
+	return a;
+}
+
+B
+public String get_notice_list(String idx){
+	
+	return a;
+}
+
+C
+public String notice_inquire(String idx){
+	
+	return a;
+}
+
+D
+public String search_notice(String idx){
+	
+	return a;
+}
+
+1.취약점 명  -> XSS
+2. 취약
+3. 취약 name 값이 필터링을 거치지않고 <p> 태그 안에 값으로 출력되고 있다
+
+
+
+SQL Injection
+XSS
+
+
+<SCRIPT>alert(1)</script>
+<>(1)</>
+
+<scrscriptipt>alealertrt(1)</script>
+<img
+
+SW 보안약점 진단원
+https://www.kisa.or.kr/401/form?postSeq=3474&page=1#fnPostAttachDownload
+
+
+
+1.항목명 : SQL Injection
+2. 양호/취약 : 취약
+3. 사유 : username과 password 입력값이 보호받지 못하고 Query로서 해석되고 있어서
+		SQL Injection 가능성이 존재함
+
+select * from db_user where username='username' and password ='pwd' 'or 1=1--
+=============================
+응용
+satement class -> java
+sql 쿼리를 처리해주는 클래스
+사용자 입력값을 보호해주지 못해 -> 별도 필터링 보호로직 만들어야함
+
+preparedstatment class -> java
+
+사용자 쿼리를 바인딩 처리해주는 함수 제공
+
+sql = select * from db_user where username='username' and password ='pwd' 'or 1=1--
+setString.aaa(sql) -> 쿼리로 인식하는것이 아닌 문자열로 인식되게끔 해주는 함수를 제공함
+"select * from db_user where username='username' and password ='pwd' 'or 1=1--"
+
+1.항목명 : 파일 업로드
+2. 양호/취약 : 취약
+3. 사유 : 	
+파일 업로드 로직(기능)만 존재하고
+확장자에 대한 검증 로직이 전혀 보이지 않는다.
+파일업로드 취약점이 존재할 가능성이 있다.
+
+파일다운로드 공격 / Directory Traversal / path Traversal / 경로 순회 공격
+
+정/오탐 판별 1
+
+1. 항목명 : 파일다운로드 공격 / Directory Traversal / path Traversal / 경로 순회 공격
+2. 취약
+3. 사유 : P(filename)의 사용자 입력 값의 적절한 필터링 보호조치를 받고 있지 않아
+경로 순회 공격에 노출되어 있다. (../../../../etc/passwd)
+
+체크 포인트
+사용자의 입력 값의 시작과 끝이 어디냐
+
+응용
+java에서 사용하는 Stream 객체 특징
+경로순회공격을 방어하는 로직은 어떻게 생겼을까?
+
+../ -> ""
+../ -> ..../
+
+정/오탐 판별 2
+1.항목명 SQL Injection
+2.양호/취약 여부  양호
+3. 사유
+	=>해당 코드는 mybatis를 사용하고 있고 #{keyword} 문법은
+	 PreparedStatement 사용하게 됨
+	 그래서 사용자의 입력값이 쿼리로서 해석되지 않음
+	 그 반대는 ${} <= 취약
+	 https://mybatis.org/mybatis-3/ko/sqlmap-xml.html
+
+mybatis SQL Query 개발을 용이하게 하기 위해 만든 SQL 맵 또는 프레임워크다.
+
+
+keyword = test'or 1=1-- => 안전한 이유를 동적으로 확인한다.
+
+정오탐 판별 3
+1.항목명 : XSS 
+2.양호/취약 여부 : 양호
+3. 사유
+	해당 로직은 특수문자 &<>" ' () 필터링(치환)을 하고 있다
+	위 특수문자를 우회하여 실행되는 XSS 없음 (가능성이 매우 희박하다)
+
+XSS 대응 방안으로 사용자 입력값을 블랙리스트에 특수문자 정의해주는게 가장 안전하다.
+
+
+정오탐 판별 4
+1.항목명 : 파일 업로드 
+2.양호/취약 여부 : 취약 (어느정도 보안이 갖춰진 취약함)
+3. 사유 : 가장 중요한 파일 확장자 검증이 없어서 우회 공격 가능성이 존재한다.
+
+	파일 업로드 조치 방법
+		최선. 확장자 검증 (화이트리스트) .jpg, .png
+		차선 
+			(부가) MimeType 검증
+			(부가) 확장자 검증 (블랙리스트) 
+			(부가) 파일 크기 검증
+
+Path.GetFileName -> /C:/Data/ssss/aaa.txt => aaa.txt
+FileName ../../../../../C:/Data/ssss/aaa.txt
+
+
+정오탐 판별 5
+CASE 1
+1.항목명 : SQL Injection
+2.양호/취약 여부 : 양호
+3. 사유 : preparedStatement 사용하면서 쿼리에 대한 바인딩 처리를 해주고 있다.
+
+CASE 2
+1.항목명 : 리다이렉트 검증 여부
+2.양호/취약 여부 : 취약
+3. 사유 : redirect(rd) 라는 사용자 입력 값에 대한 검증이 없다.
+
+구분 하는 파라미터인거 같다. (bn == "01AD") 02AD 01CD
+
+
+정오탐 판별 6
+1.항목명 : SQL Injection
+2.양호/취약 여부 : 취약
+3. 사유 : 사용자 입력값인 gubun 값이 쿼리로서 사용이 되는 과정중에
+	Statement 클래스를 사용하고 있으며 안전한 조치(필터링)를 받지 못하고 있다.
+	
+
+회원가입 AWS 무료 계정 1개
+EC2 1
+S3 1
+
+python 있는지
+git 있는지
+aws cli 있는지
+다운로드 설치
+
+
+
+웹 애플리케이션 / 모바일  / 시스템 <= 오래전부터 존재한 영역이고 체계가 많이 잡혀있다.
+클라우드 <= 아직까지 과도기 성격이 많은 진단이다.
+
+
+
+수동 진단 <= 자체 제작한 스크립트 도구를 활용해서 진단을 수행한다. 
+
+도구 활용 진단 <= 상용 소프트웨어 / 오픈 사용한 진단
+
+DataDog -> 클라우드 리소스 점검
+
+
+
+첫째날
+실무 취약점점검 무엇인지? 모의해킹 비교
+Burp Suite 도구 Intruder/ Repeater / Target / Intercept / Http History 
+PortSwigger Academy
+XSS / CSRF / SQL Injection / File Upload 
+
+둘째날
+소스코드 진단 (수동) 문제풀이 방식
+클라우드 도구를 통한 진단 (Prizma / opsnow / datadog 상용 유료 솔루션)
+				오픈소스 (ScoutSuite / Prowler)
+
+
+
+
+
+
+
+
+
+
+
+
