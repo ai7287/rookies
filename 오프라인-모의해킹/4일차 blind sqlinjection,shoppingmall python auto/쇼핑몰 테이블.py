@@ -1,5 +1,5 @@
 import requests
-1
+
 주소 = "https://lab.eqst.co.kr:8110/practice/practice01/detail?id=61"
 
 쿠키 = {
