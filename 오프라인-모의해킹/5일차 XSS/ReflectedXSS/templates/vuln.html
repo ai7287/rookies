@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>취약한 페이지</title>
+    <script>
+        if ('Y' == 'N' || 'N' == '{{ user_input | safe }}')
+            var check = '{{ user_input | safe }}';
+    </script>
+</head>
+<body>
+    <h1>취약한 페이지</h1>
+    <p>URL의 <code>check</code> 파라미터를 조작하여 XSS 공격을 시도해보세요.</p>
+    
+    <div style="border: 1px solid #ccc; padding: 10px; margin-top: 20px;">
+        <h2>자바스크립트 코드</h2>
+        <pre>
+&lt;script&gt;
+...
+if ('Y' == 'N' || 'N' == '{{ user_input }}')
+    var check = '{{ user_input }}';
+...
+&lt;/script&gt;
+        </pre>
+    </div>
+</body>
+</html>

