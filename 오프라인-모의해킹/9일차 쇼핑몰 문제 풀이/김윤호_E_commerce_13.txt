@@ -1,0 +1,30 @@
+================================
+* 쇼핑몰 문제 13번
+================================
+
+1. 풀이과정
+
+<div class="row">
+                <div class="mb-3 col-4">
+                    <label for="member" class="form-label">작성자</label>
+                    <input type="text" class="form-control" id="member"
+                           value="rksk(rksk)" readonly>
+                    <input type="hidden" id="writerid" value="11325">
+                </div>
+
+
+<div class="row">
+                <div class="mb-3 col-4">
+                    <label for="member" class="form-label">작성자</label>
+                    <input type="text" class="form-control" id="member"
+                           value="관리자(admin)" readonly>
+                    <input type="hidden" id="writerid" value="224">
+                </div>
+
+id=writerid, value= 224인것이 관리자계정인것같으므로
+_csrf=3ffd2a94-1f9f-4d04-bac8-65f4ebe24bcf&id=16555&originid=16555&title=asdf&content=asdf&writerid=224
+
+GET /practice/practice13/qna/removebyid?id=16552 HTTP/1.1
+removebyid?를 이용해 삭제한다.
+2.정답
+writerid_in_notice_view

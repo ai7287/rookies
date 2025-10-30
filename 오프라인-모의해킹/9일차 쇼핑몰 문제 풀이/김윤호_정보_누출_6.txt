@@ -1,0 +1,11 @@
+================================
+* 정보 누출 워게임 문제 6번
+================================
+
+1. 풀이과정
+view-source:https://lab.eqst.co.kr:8083/exam54/solve/admin/header.php
+view-source:https://lab.eqst.co.kr:8083/exam54/solve/admin/
+
+https://lab.eqst.co.kr:8083/exam54/solve/admin/index.php
+2.정답
+adminframe
