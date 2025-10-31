@@ -1,0 +1,14 @@
+================================
+* 쇼핑몰 문제 4번
+================================
+
+1. 풀이과정
+https://lab.eqst.co.kr:8110/practice/practice04/findpw에서 burp로 잡은뒤
+아이디(rksk)를 검색해 찾은후 admin으로 바꿔준다.
+           <div class="mb-3">
+                <label for="memberid" class="form-label">아이디</label>
+                <input type="text" class="form-control" id="memberid" placeholder="아이디" value="admin" readonly>
+            </div>
+
+2.정답
+encrypted_memberid

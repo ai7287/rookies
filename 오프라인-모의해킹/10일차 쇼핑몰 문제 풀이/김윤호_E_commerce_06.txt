@@ -1,0 +1,26 @@
+================================
+* 쇼핑몰 문제 6번
+================================
+	
+1. 풀이과정
+function encryptMemberid(text) {
+    var encrypt = CryptoJS.AES.encrypt(text, passphrase);
+    return encrypt.toString();
+}
+
+function decryptMemberid(text) {
+    var decrypt = CryptoJS.AES.decrypt(text, passphrase);
+    return decrypt.toString(CryptoJS.enc.Utf8);
+}
+를 확인해 아이디가 encrypt된것을 확인함.
+	
+
+회원탈퇴를 burp로 잡은 뒤 암호화된 id부분을 찾는다.
+     <div class="modal-footer">
+        <a type="button" class="btn btn-danger" href="/practice/practice06/quit?id=U2FsdGVkX18d2JrGmRwFkjoPUzglCsQ7N4Lab6FuQk8%3D">탈퇴
+id부분이 encrypt된것을 확인해 encrypt된 admin을 찾아 id에 넣으면 된다고 생각해 넣어보았음.
+	encryptMemberid('admin')
+'U2FsdGVkX18ZBt6BFsB6UchE6tmrA/hMJ3yKHRy1a20='
+
+	2.정답
+	parameter_encryption

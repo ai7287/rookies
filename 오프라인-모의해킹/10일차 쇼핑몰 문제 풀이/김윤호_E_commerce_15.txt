@@ -1,0 +1,62 @@
+	================================
+	* * 쇼핑몰 워게임 문제 15번
+	================================
+	
+	1. 풀이과정
+	
+	쿠폰번호의 글자 수부터 확인함.
+	
+   var prefix = "Eqst";
+   
+   <input type="hidden" id="memberid" value="rksk" />
+            <input type="hidden" id="md5hash" value="76" />
+md값을 확인 한후 코드에서 burp를 이용해 각 번호들의 생성하는 방법을 찾음.
+찾은 후 python코드로 자동 탐지 할수있게 만들어 시간마다 바뀌는 비밀번호와 md5hash값을 수정해서 찾아냄.
+import time
+import hashlib
+import string
+import datetime
+
+# 1. 고정 상수 및 확인된 값
+memberid = "rksk"
+charSet = ["S", "e", "y", "o", "n", "g", "-", "K", "i", "m"]
+prefix = "Eqst"
+
+# 여기에 방금 확인한 #md5hash의 2자리 값을 입력하세요!
+# 예: target_hash = "ee"
+target_hash = "76" # <--- 반드시 이 값을 최신 값으로 수정해야 합니다!
+
+# 2. 현재 시간 기반 CouponFront 계산
+# time.time()은 초 단위. JS 로직에 따라 time_val 계산 (약 16분 40초마다 바뀜)
+time_val = str(int(time.time() * 1000) // 1000000 % 10000).zfill(4)
+coupon_front = "".join(charSet[int(d)] for d in time_val)
+
+# 3. ID 기반 CouponMiddle 계산 (qwer0707 -> en-o로 고정)
+asciisum = str(810 + sum(ord(c) for c in memberid)).zfill(4)
+coupon_middle = "".join(charSet[int(d)] for d in asciisum)
+
+# 4. FinalChar (X) 브루트 포스 및 정답 찾기
+chars_to_check = string.digits + string.ascii_uppercase
+found_x = None
+
+for final_char in chars_to_check:
+    coupon_13 = prefix + coupon_front + coupon_middle + final_char
+    md5_hash = hashlib.md5(coupon_13.encode()).hexdigest()[:2]
+
+    if md5_hash == target_hash:
+        found_x = final_char
+        break
+
+# 5. 결과 출력
+print(f"--- 쿠폰 생성 정보 (Hash: {target_hash}, Front: {coupon_front}, Time: {time_val}) ---")
+
+if found_x:
+    final_coupon = coupon_13 + target_hash
+    print("\n✅ 최종 쿠폰 번호 (Final Answer)")
+    print(f"정답 X 값: {found_x}")
+    print(f"최종 쿠폰 번호: {final_coupon}")
+else:
+    print("\n❌ 현재 시간대의 시도 범위 내에서 목표 해시를 만족하는 X를 찾지 못했습니다.")
+    print("❌ 쿠폰Front가 바뀌었거나, 해시가 방금 변경되었습니다. 해시를 재확인하고 코드를 즉시 다시 실행하십시오.")
+2. .정답
+	manners_maketh_coupons

@@ -1,0 +1,13 @@
+================================
+* 쇼핑몰 문제 10번
+================================
+
+1. 풀이과정
+
+결제창에서 모든 파라미터가 수정이 안되는것을 확인하고 다음 payment로 결제할때의 결제창을 확인해보니 바뀌는것을 확인하였다.
+https://lab.eqst.co.kr:8110/practice/practice10/order의 결제창을 burp로 잡고
+GET /practice/practice10/payment?orderlistid=47694&productname=%5B%EC%95%A0%ED%94%8C%5D%20%EC%95%A0%ED%94%8C%EC%9B%8C%EC%B9%98%20SE&totalprice=362000&payment=eqstpay HTTP/1.1
+의 파라미터중 totalprice를 100으로 바꾼 후 결제한다.
+
+2.정답
+payment_with_eqstpay

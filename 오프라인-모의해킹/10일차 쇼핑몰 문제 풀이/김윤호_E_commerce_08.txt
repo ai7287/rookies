@@ -1,0 +1,16 @@
+================================
+* 쇼핑몰 문제 8번
+================================
+
+1. 풀이과정	
+
+               </td>
+                <td id="price">2,760,000원</td>
+                <input type="hidden" name="price1" value="2,760,000원">
+                <input type="hidden" name="price2" value="2760000">
+                <td id="count">
+  ...&price1=359%2C000%EC%9B%90&price2=359000&count=1&membername=rksk&email=rksk%40naver.com&phone=01012341234&ordername=asdf&ordertel=12312311&addr1=asdf&addr2=adsf&memo=%EB%B0%B0%EC%86%A1+%EC%A0%84+%EC%97%B0%EB%9D%BD%EB%B0%94%EB%9E%8D%EB%8B%88%EB%8B%A4.&couponid=0&point=2000&usepoint=0&baseprice=productdefault&shipmentfee=-358900&discount=couponandpoint&payment=eqstpay&totalprice=362000&pointsave=10860
+  파라미터 중 포인트를 이용해보니 사용만되고 바뀌는것은 안되는것을 확인하고 배송비를 음수로 바꿔보았더니 금액이 바뀌었다.
+  shipmentfee=-358900     
+2.정답
+shipmentfee_cannot_be_negative

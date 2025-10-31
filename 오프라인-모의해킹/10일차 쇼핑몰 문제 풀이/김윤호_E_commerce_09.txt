@@ -1,0 +1,10 @@
+================================
+* 쇼핑몰 문제 9번
+================================
+
+1. 풀이과정
+
+point=1000000&usepoint=361900&baseprice=productdefault&shipmentfee=3000&discount=couponandpoint&payment=eqstpay&totalprice=362000&pointsave=10860
+포인트와 usepoint를 바꿔보니 금액이 바뀌는것을 확인함.
+2.정답
+point_overflow
